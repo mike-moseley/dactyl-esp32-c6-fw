@@ -9,6 +9,7 @@
 typedef struct {
     uint8_t row;
     uint8_t col;
+    uint8_t half;
     bool    pressed;
 } key_event_t;
 

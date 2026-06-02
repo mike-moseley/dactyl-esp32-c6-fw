@@ -3,11 +3,12 @@
 // Which half this firmware is compiled for.
 // Set via: idf.py -DEXTRA_CFLAGS="-DCENTRAL_HALF" build
 // or define here directly for now.
-#define CENTRAL_HALF  1   // 1 = left (connects to PC), 0 = right (peripheral)
+#include <stdint.h>
+#define CENTRAL_HALF 1   // 1 = left (connects to PC), 0 = right (peripheral)
 
 // Matrix dimensions
-#define MATRIX_ROWS     5
-#define MATRIX_COLS     5
+#define MATRIX_ROWS 5
+#define MATRIX_COLS 5
 
 // Row GPIO pins (output, driven low to select)
 #define ROW_PINS  { 0, 1, 2, 3, 4 }
@@ -36,7 +37,7 @@ static const uint8_t KEY_EXISTS[MATRIX_ROWS][MATRIX_COLS] = {
 #endif
 
 // Debounce time in milliseconds
-#define DEBOUNCE        5
+#define DEBOUNCE 5
 
 // Matrix scan interval in milliseconds
-#define SCAN_INTERVAL_MS  1
+#define SCAN_INTERVAL_MS 1
