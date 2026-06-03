@@ -4,7 +4,7 @@
 // Set via: idf.py -DEXTRA_CFLAGS="-DCENTRAL_HALF" build
 // or define here directly for now.
 #include <stdint.h>
-#define CENTRAL_HALF 1   // 1 = left (connects to PC), 0 = right (peripheral)
+#define CENTRAL_HALF 0   // 1 = left (connects to PC), 0 = right (peripheral)
 
 // Matrix dimensions
 #define MATRIX_ROWS 5

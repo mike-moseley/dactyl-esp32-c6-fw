@@ -111,12 +111,13 @@ static void sender_task(void *arg) {
 	}
 }
 
-void on_sync(void) {
-	ble_hs_id_infer_auto(0, NULL);
+static void on_sync(void) {
+  uint8_t own_addr_type;
+	ble_hs_id_infer_auto(0, &own_addr_type);
 	adv_start();
 }
 
-void on_reset(int reason) {
+static void on_reset(int reason) {
 	ESP_LOGE(TAG, "BLE host reset, reason: %d", reason);
 }
 

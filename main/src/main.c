@@ -15,6 +15,7 @@ void central_main(void);
 void peripheral_main(void);
 
 void app_main(void) {
+  vTaskDelay(pdMS_TO_TICKS(1000));
   esp_err_t err = nvs_flash_init();
   if (err == ESP_ERR_NVS_NO_FREE_PAGES ||
       err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
