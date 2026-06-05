@@ -1,3 +1,4 @@
+#include "ble_hid.h"
 #include "ble_split.h"
 #include "common.h"
 #include "config.h"
@@ -149,6 +150,7 @@ static void scan_start(void) {
 static void on_sync(void) {
   ble_hs_id_infer_auto(0, NULL);
   scan_start();
+  hid_start_adv();
 }
 
 static void on_reset(int reason) {
@@ -159,4 +161,5 @@ void central_init(void) {
   ble_hs_cfg.reset_cb = on_reset;
   ble_svc_gap_init();
   ble_svc_gatt_init();
+  hid_register_svcs();
 }
