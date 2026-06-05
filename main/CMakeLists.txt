@@ -7,6 +7,7 @@ idf_component_register(
         "src/ble_split.c"
         "src/ble_peripheral.c"
         "src/ble_central.c"
+        "src/ble_hid.c"
     INCLUDE_DIRS "include"
     REQUIRES
         bt

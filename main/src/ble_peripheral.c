@@ -73,13 +73,13 @@ static int peripheral_gap_cb(struct ble_gap_event *event, void *arg) {
 }
 
 static void adv_start(void) {
-  const struct ble_hs_adv_fields rsp_fields = {
+  const struct ble_hs_adv_fields fields = {
       .flags = BLE_HS_ADV_F_DISC_GEN | BLE_HS_ADV_F_BREDR_UNSUP,
       .uuids128 = &s_svc_uuid,
       .num_uuids128 = 1,
       .uuids128_is_complete = 1,
   };
-  int err = ble_gap_adv_set_fields(&rsp_fields);
+  int err = ble_gap_adv_set_fields(&fields);
   if (err != 0) {
     ESP_LOGE(TAG, "Error setting advertise fields: %d", err);
   }
