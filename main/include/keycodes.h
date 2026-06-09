@@ -130,5 +130,11 @@
 #define MOD_RGUI    (1 << 7)
 
 // Sentinel values (not HID keycodes)
-#define KEY_NONE   0x00  // no key / empty slot
-#define KEY_LAYER  0xFF  // layer switch
+#define KEY_NONE     0x00
+#define KEY_LAYER_1  0xF1
+#define KEY_LAYER_2  0xF2
+#define KEY_LAYER_3  0xF3
+#define KEY_LAYER_4  0xF4
+
+#define IS_LAYER_KEY(kc)    ((kc) >= 0xF1 && (kc) <= 0xF4)
+#define LAYER_FROM_KEY(kc)  ((kc) & 0x0F)
