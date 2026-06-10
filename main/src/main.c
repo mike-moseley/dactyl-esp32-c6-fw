@@ -11,8 +11,8 @@
 static const char *TAG = "main";
 
 QueueHandle_t key_event_queue;
-void central_main(void);
-void peripheral_main(void);
+void main_central(void);
+void main_peripheral(void);
 
 void app_main(void) {
   vTaskDelay(pdMS_TO_TICKS(1000));
@@ -29,7 +29,7 @@ void app_main(void) {
 #if CENTRAL_HALF
   central_main();
 #else
-  peripheral_main();
+  main_peripheral();
 #endif
 
   ESP_LOGI(TAG, "dactyl-fw started, half=%s",

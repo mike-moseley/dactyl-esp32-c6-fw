@@ -8,6 +8,7 @@ idf_component_register(
         "src/ble_peripheral.c"
         "src/ble_central.c"
         "src/ble_hid.c"
+        "src/keymap.c"
     INCLUDE_DIRS "include"
     REQUIRES
         bt
