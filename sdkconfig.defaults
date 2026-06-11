@@ -8,5 +8,8 @@ CONFIG_BT_CONTROLLER_ENABLED=y
 # Disable classic BT (BLE only)
 CONFIG_BT_CLASSIC_ENABLED=n
 
+# Persist BLE bond info across power cycles
+CONFIG_BT_NIMBLE_NVS_PERSIST=y
+
 # FreeRTOS
 CONFIG_FREERTOS_HZ=1000

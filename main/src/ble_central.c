@@ -148,7 +148,8 @@ static void scan_start(void) {
 }
 
 static void on_sync(void) {
-  ble_hs_id_infer_auto(0, NULL);
+  uint8_t own_addr_type;
+  ble_hs_id_infer_auto(0, &own_addr_type);
   scan_start();
   hid_start_adv();
 }

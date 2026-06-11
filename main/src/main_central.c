@@ -17,9 +17,11 @@ void main_central(void) {
   ble_split_init();
   while (1) {
     if (xQueueReceive(key_event_queue, &event, portMAX_DELAY)) {
-      ESP_LOGI(TAG, "key half=%d r=%d c=%d %s", event.half, event.row,
-               event.col, event.pressed ? "down" : "up");
       key = coord_to_keycode(event.half, event.row, event.col);
+      ESP_LOGI(TAG, "key half=%d r=%d c=%d %s -> kc=0x%02x mod=0x%02x",
+               event.half, event.row, event.col,
+               event.pressed ? "down" : "up",
+               key.keycode, key.modifier);
       if (key.keycode == KEY_NONE) {
         continue;
       } else if (IS_LAYER_KEY(key.keycode)) {

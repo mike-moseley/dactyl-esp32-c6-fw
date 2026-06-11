@@ -1,4 +1,5 @@
 #include "ble_split.h"
+#include "config.h"
 #include "ble_split_priv.h"
 #include "nimble/nimble_port.h"
 #include "nimble/nimble_port_freertos.h"

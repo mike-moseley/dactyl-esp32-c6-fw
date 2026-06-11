@@ -27,7 +27,7 @@ void app_main(void) {
   xTaskCreate(matrix_scan_task, "matrix", 2048, NULL, 5, NULL);
 
 #if CENTRAL_HALF
-  central_main();
+  main_central();
 #else
   main_peripheral();
 #endif

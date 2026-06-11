@@ -1,4 +1,5 @@
 #include "ble_hid.h"
+#include "esp_log.h"
 #include "host/ble_att.h"
 #include "host/ble_gap.h"
 #include "host/ble_gatt.h"
@@ -8,7 +9,6 @@
 #include "host/ble_uuid.h"
 #include "nimble/ble.h"
 #include "os/os_mbuf.h"
-#include "esp_log.h"
 #include <stdint.h>
 #include <string.h>
 
@@ -51,6 +51,8 @@ static const uint8_t hid_report_map[] = {
 };
 static int gatt_svr_chr_kb(uint16_t conn_handle, uint16_t attr_handle,
                            struct ble_gatt_access_ctxt *ctxt, void *arg);
+static int gatt_svr_dsc_report_ref(uint16_t conn_handle, uint16_t attr_handle,
+                                   struct ble_gatt_access_ctxt *ctxt, void *arg);
 
 static volatile uint16_t s_conn = BLE_HS_CONN_HANDLE_NONE;
 static bool s_subscribed;
@@ -85,6 +87,14 @@ static const struct ble_gatt_svc_def gatt_svr_svcs[] = {
                  .access_cb = gatt_svr_chr_kb,
                  .val_handle = &dm_kb_handle,
                  .flags = BLE_GATT_CHR_F_READ | BLE_GATT_CHR_F_NOTIFY,
+                 .descriptors = (struct ble_gatt_dsc_def[]){
+                     {
+                         .uuid = BLE_UUID16_DECLARE(0x2908),
+                         .access_cb = gatt_svr_dsc_report_ref,
+                         .att_flags = BLE_ATT_F_READ,
+                     },
+                     {0},
+                 },
              },
              {
                  0, /* No more characteristics in this service */
@@ -129,6 +139,13 @@ static int gatt_svr_chr_kb(uint16_t conn_handle, uint16_t attr_handle,
   return 0;
 }
 
+static int gatt_svr_dsc_report_ref(uint16_t conn_handle, uint16_t attr_handle,
+                                   struct ble_gatt_access_ctxt *ctxt, void *arg) {
+  uint8_t report_ref[2] = {0x00, 0x01}; // report ID 0, input report
+  int err = os_mbuf_append(ctxt->om, report_ref, sizeof(report_ref));
+  return err == 0 ? 0 : BLE_ATT_ERR_INSUFFICIENT_RES;
+}
+
 void hid_register_svcs(void) {
   ble_hs_cfg.sm_bonding = 1;
   ble_hs_cfg.sm_io_cap = BLE_HS_IO_NO_INPUT_OUTPUT;
@@ -142,7 +159,7 @@ void hid_register_svcs(void) {
   ble_gatts_add_svcs(gatt_svr_svcs);
 }
 
-static void hid_adv_start(void);
+void hid_start_adv(void);
 
 static int hid_gap_cb(struct ble_gap_event *event, void *arg) {
   switch (event->type) {
@@ -152,13 +169,13 @@ static int hid_gap_cb(struct ble_gap_event *event, void *arg) {
       ble_gap_security_initiate(s_conn);
       ESP_LOGI(TAG, "Connected to device");
     } else {
-      hid_adv_start();
+      hid_start_adv();
       ESP_LOGI(TAG, "Connection to device failed, advertising...");
     }
     break;
   case BLE_GAP_EVENT_DISCONNECT:
     s_conn = BLE_HS_CONN_HANDLE_NONE;
-    hid_adv_start();
+    hid_start_adv();
     ESP_LOGI(TAG, "Disconnected from device");
     break;
   case BLE_GAP_EVENT_SUBSCRIBE:
@@ -175,7 +192,7 @@ static int hid_gap_cb(struct ble_gap_event *event, void *arg) {
   return BLE_ERR_SUCCESS;
 }
 
-static void hid_adv_start(void) {
+void hid_start_adv(void) {
   const struct ble_hs_adv_fields fields = {
       .flags = BLE_HS_ADV_F_DISC_GEN | BLE_HS_ADV_F_BREDR_UNSUP,
       .uuids16 = (ble_uuid16_t[]){BLE_UUID16_INIT(BT_KEYBOARD_HID_UUID)},
