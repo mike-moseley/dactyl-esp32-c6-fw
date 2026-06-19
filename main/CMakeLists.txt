@@ -15,3 +15,7 @@ idf_component_register(
         nvs_flash
         esp_driver_gpio
 )
+
+if(DEFINED CENTRAL_HALF)
+    target_compile_definitions(${COMPONENT_LIB} PUBLIC CENTRAL_HALF=${CENTRAL_HALF})
+endif()

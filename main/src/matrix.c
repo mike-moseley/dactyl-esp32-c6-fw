@@ -56,8 +56,9 @@ void matrix_scan_task(void *arg) {
           if (++debounce[r][c] >= DEBOUNCE) {
             debounce[r][c] = 0;
             prev_state[r][c] = pressed;
+            uint8_t actual_col = MIRROR_COLS ? (MATRIX_COLS - 1 - c) : c;
             key_event_t ev = {
-                .row = r, .col = c, .half = CENTRAL_HALF, .pressed = pressed};
+                .row = r, .col = actual_col, .half = CENTRAL_HALF, .pressed = pressed};
             xQueueSend(key_event_queue, &ev, 0);
           }
         } else {

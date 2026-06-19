@@ -40,6 +40,7 @@ void main_central(void) {
       } else {
         if (event.pressed) {
           for (int i = 0; i < 6; i++) {
+            if (s_keys[i] == key.keycode) break;
             if (s_keys[i] == 0x00) {
               s_keys[i] = key.keycode;
               s_modifier |= key.modifier;

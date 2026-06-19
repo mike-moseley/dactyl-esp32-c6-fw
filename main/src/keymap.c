@@ -62,7 +62,7 @@ static key_t layer_2[2][MATRIX_ROWS][MATRIX_COLS] = {
         { K(KEY_1),    K(KEY_2),    K(KEY_3),    K(KEY_4),      K(KEY_5)     },
         { K(KEY_NONE), K(KEY_NONE), KS(KEY_TAB), K(KEY_TAB),    K(KEY_NONE)  },
         { KS(KEY_1),   KS(KEY_2),   KS(KEY_3),   KS(KEY_4),     KS(KEY_5)    },
-        { K(KEY_NONE), K(KEY_LBRKT),K(KEY_RBRKT),K(KEY_LAYER_3),K(KEY_SPACE) },
+        { K(KEY_NONE), K(KEY_LBRKT),K(KEY_RBRKT),K(KEY_LAYER_3),K(KEY_BKSP) },
         { K(KEY_NONE), K(KEY_NONE), K(KEY_NONE), K(KEY_LSHIFT), K(KEY_LCTRL) },
     }
 };

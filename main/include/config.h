@@ -1,10 +1,15 @@
 #pragma once
 
 // Which half this firmware is compiled for.
-// Set via: idf.py -DEXTRA_CFLAGS="-DCENTRAL_HALF" build
-// or define here directly for now.
+// Left half:  idf.py build
+// Right half: idf.py build -DEXTRA_CFLAGS="-DCENTRAL_HALF=0"
 #include <stdint.h>
-#define CENTRAL_HALF 1   // 1 = left (connects to PC), 0 = right (peripheral)
+#ifndef CENTRAL_HALF
+#define CENTRAL_HALF 1
+#endif
+#ifndef MIRROR_COLS
+#define MIRROR_COLS (!CENTRAL_HALF)
+#endif
 
 // Matrix dimensions
 #define MATRIX_ROWS 5
@@ -22,19 +27,19 @@
 // [row][col], col 0 = leftmost
 #if CENTRAL_HALF
 static const uint8_t KEY_EXISTS[MATRIX_ROWS][MATRIX_COLS] = {
+    { 1, 1, 1, 1, 1 },
+    { 1, 1, 1, 1, 1 },
+    { 1, 1, 1, 1, 1 },
     { 0, 1, 1, 1, 1 },
-    { 1, 1, 1, 1, 1 },
-    { 1, 1, 1, 1, 1 },
-    { 1, 1, 1, 1, 1 },
     { 0, 0, 0, 1, 1 },
 };
 #else
 static const uint8_t KEY_EXISTS[MATRIX_ROWS][MATRIX_COLS] = {
-    { 1, 1, 1, 1, 0 },
     { 1, 1, 1, 1, 1 },
     { 1, 1, 1, 1, 1 },
     { 1, 1, 1, 1, 1 },
-    { 1, 1, 0, 0, 0 },
+    { 0, 1, 1, 1, 1 },
+    { 0, 0, 0, 1, 1 },
 };
 #endif
 
